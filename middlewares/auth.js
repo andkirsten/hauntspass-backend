@@ -1,32 +1,20 @@
-const { Joi, celebrate } = require("celebrate");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
+const UnauthorizedError = require("../utils/errors/UnauthorizedError");
 
-const validateSignup = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email().messages({
-      "string.email": "Please provide a valid email",
-      "string.empty": "Email is required",
-    }),
+const auth = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    if (!authorization || !authorization.startsWith("Bearer ")) {
+      next(new UnauthorizedError("Authorization required"));
+    }
+    const token = authorization.replace("Bearer ", "");
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.user = payload;
+    return next();
+  } catch (err) {
+    return next(new UnauthorizedError("Authorization required"));
+  }
+};
 
-    password: Joi.string().required().min(8).messages({
-      "string.min": "Password must be at least 8 characters long",
-      "string.empty": "Password is required",
-      "string.max": "Password must be at most 30 characters long",
-    }),
-  }),
-});
-
-const validateLogin = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email().messages({
-      "string.email": "Please provide a valid email",
-      "string.empty": "Email is required",
-    }),
-    password: Joi.string().required().min(8).messages({
-      "string.min": "Password must be at least 8 characters long",
-      "string.empty": "Password is required",
-      "string.max": "Password must be at most 30 characters long",
-    }),
-  }),
-});
-
-module.exports = { validateSignup, validateLogin };
+module.exports = auth;
