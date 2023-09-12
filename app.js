@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const { errors } = require("celebrate");
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { validateLogin } = require("./middlewares/validation");
+const { validateLogin, validateSignup } = require("./middlewares/validation");
 const usersRouter = require("./routes/users");
 const { login, signup } = require("./controllers/users");
 
@@ -18,6 +18,7 @@ dotenv.config();
 app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
+app.use(express.json());
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/haunts", {
@@ -31,13 +32,11 @@ mongoose
 
 app.use("/users", usersRouter);
 
-app.post("/signup", validateLogin, signup);
 app.post("/login", validateLogin, login);
+app.post("/signup", validateSignup, signup);
 
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use(() => {
+  throw new Error("Not Found");
 });
 
 app.use(errorLogger);

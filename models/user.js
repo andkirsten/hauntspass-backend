@@ -4,6 +4,12 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please provide your name"],
+    minlength: [2, "Name must be at least 2 characters long"],
+    maxlength: [30, "Name must be no more than 30 characters long"],
+  },
   email: {
     type: String,
     required: [true, "Please provide your email"],
@@ -37,3 +43,7 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       });
     });
 };
+
+const User = mongoose.model("user", userSchema);
+
+module.exports = User;
