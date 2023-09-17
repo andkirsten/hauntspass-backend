@@ -7,9 +7,17 @@ exports.registerPass = (req, res, next) => {
   RegisterPass.create({
     donationId,
     passAmt,
+    user: req.user._id,
+    eventId: req.event._id,
   })
     .then((pass) => {
-      res.send({ donationId, passAmt, _id: pass._id });
+      res.send({
+        donationId,
+        passAmt,
+        _id: pass._id,
+        user: pass.user,
+        eventId: pass.eventId,
+      });
     })
     .catch((err) => {
       if (err.name === "MongoError" && err.code === 11000) {
