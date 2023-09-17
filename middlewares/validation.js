@@ -34,4 +34,18 @@ const validateLogin = celebrate({
   }),
 });
 
-module.exports = { validateSignup, validateLogin };
+const validatePass = celebrate({
+  body: Joi.object().keys({
+    donationId: Joi.string().required().messages({
+      "string.empty":
+        "Please provide the Receipt Reference from your confirmation email",
+    }),
+    passAmt: Joi.number().required().min(1).messages({
+      "number.min": "Pass must include at least 1 person",
+      "number.empty":
+        "Please enter the number of people your pass will include",
+    }),
+  }),
+});
+
+module.exports = { validateSignup, validateLogin, validatePass };
