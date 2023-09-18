@@ -8,6 +8,7 @@ const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const { validateLogin, validateSignup } = require("./middlewares/validation");
 const usersRouter = require("./routes/users");
+const passRouter = require("./routes/registrations");
 const { login, signup } = require("./controllers/users");
 
 const app = express();
@@ -31,6 +32,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/users", usersRouter);
+app.use("/pass", passRouter);
 
 app.post("/login", validateLogin, login);
 app.post("/signup", validateSignup, signup);

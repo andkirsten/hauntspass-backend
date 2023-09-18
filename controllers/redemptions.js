@@ -13,6 +13,7 @@ exports.redeemReward = (req, res, next) => {
         _id: redemption._id,
         rewardId: redemption.rewardId,
         pass: redemption.pass,
+        redeemedAt: redemption.redeemedAt,
       });
     })
     .catch((err) => {
