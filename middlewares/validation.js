@@ -48,4 +48,12 @@ const validatePass = celebrate({
   }),
 });
 
-module.exports = { validateSignup, validateLogin, validatePass };
+const validateEvent = celebrate({
+  body: Joi.object().keys({
+    eventName: Joi.string().required().messages({
+      "string.empty": "Please provide the Event Name",
+    }),
+  }),
+});
+
+module.exports = { validateSignup, validateLogin, validatePass, validateEvent };

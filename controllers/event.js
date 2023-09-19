@@ -4,7 +4,7 @@ const BadRequestError = require("../utils/errors/BadRequestError");
 exports.getEvents = (req, res, next) => {
   Event.find({})
     .then((events) => {
-      res.json(events);
+      res.send(events);
     })
     .catch(next);
 };

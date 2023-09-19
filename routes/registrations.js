@@ -2,12 +2,18 @@ const express = require("express");
 const { registerPass } = require("../controllers/registrations");
 const auth = require("../middlewares/auth");
 const { validatePass } = require("../middlewares/validation");
-const { redeemReward } = require("../controllers/redemptions");
+const {
+  createRedemption,
+  updateRedemption,
+  getRedemption,
+} = require("../controllers/redemptions");
 
 const router = express.Router();
 
-router.get("/:passId", auth, validatePass, registerPass);
+router.post("/", validatePass, registerPass);
 
-router.patch("/:passId/:rewardId", auth, redeemReward);
+router.post("/:passId/", auth, createRedemption);
+router.patch("/:passId/:rewardId", auth, updateRedemption);
+router.get("/:passId/:rewardId", auth, getRedemption);
 
 module.exports = router;

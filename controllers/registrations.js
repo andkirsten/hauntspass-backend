@@ -3,17 +3,28 @@ const ConflictError = require("../utils/errors/ConflictError");
 const BadRequestError = require("../utils/errors/BadRequestError");
 
 exports.registerPass = (req, res, next) => {
+  console.log(req.body);
   const { donationId, passAmt } = req.body;
+
+  this.verifyJustGivingId(donationId)
+    .then((donation) => {
+      if (donation) {
+        console.log(res);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   RegisterPass.create({
     donationId,
     passAmt,
     user: req.user._id,
-    eventId: req.event._id,
+    eventId: "6508f51dcbfd4972a366a5b1",
   })
     .then((pass) => {
       res.send({
-        donationId,
-        passAmt,
+        passAmt: pass.passAmt,
         _id: pass._id,
         user: pass.user,
         eventId: pass.eventId,
@@ -37,3 +48,7 @@ exports.registerPass = (req, res, next) => {
       next(err);
     });
 };
+
+exports.verifyJustGivingId = () =>
+  // to do: call JustGiving API to verify donationId
+  true;

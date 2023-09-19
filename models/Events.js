@@ -4,7 +4,7 @@ const eventIdSchema = new mongoose.Schema({
   eventName: {
     type: String,
     required: [true, "Please provide the Event Name"],
-    unique: false,
+    unique: true,
     lowercase: true,
   },
 });

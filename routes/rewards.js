@@ -9,7 +9,9 @@ const {
 
 const router = express.Router();
 
-router.get("/", auth, getRewards);
+router.get("", getRewards);
 router.post("/", auth, createReward);
 router.patch("/:rewardId", auth, updateReward);
 router.delete("/:rewardId", auth, deleteReward);
+
+module.exports = router;

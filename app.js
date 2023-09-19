@@ -9,6 +9,8 @@ const { requestLogger, errorLogger } = require("./middlewares/logger");
 const { validateLogin, validateSignup } = require("./middlewares/validation");
 const usersRouter = require("./routes/users");
 const passRouter = require("./routes/registrations");
+const eventsRouter = require("./routes/events");
+const rewardsRouter = require("./routes/rewards");
 const { login, signup } = require("./controllers/users");
 
 const app = express();
@@ -33,6 +35,8 @@ mongoose
 
 app.use("/users", usersRouter);
 app.use("/pass", passRouter);
+app.use("/events", eventsRouter);
+app.use("/rewards", rewardsRouter);
 
 app.post("/login", validateLogin, login);
 app.post("/signup", validateSignup, signup);
