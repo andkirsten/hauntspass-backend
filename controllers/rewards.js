@@ -11,7 +11,6 @@ exports.getRewards = (req, res, next) => {
 };
 
 exports.createReward = (req, res, next) => {
-  console.log(req.body);
   const {
     eventId,
     rewardTitle,

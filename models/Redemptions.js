@@ -11,7 +11,7 @@ const redemptionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Reward",
   },
-  pass: {
+  passId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Registration",
   },

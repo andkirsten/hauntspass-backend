@@ -5,28 +5,22 @@ const rewardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Event",
   },
-  rewardId: {
-    type: String,
-    required: [true, "Please provide the Reward ID"],
-    unique: true,
-    lowercase: true,
-  },
   rewardTitle: {
     type: String,
     required: [true, "Please provide the Reward title"],
     unique: true,
   },
-  rewardLocation: {
+  businessDescription: {
     type: String,
-    required: [true, "Please provide the Reward Location"],
+    required: false,
     unique: false,
   },
-  rewardDescription: {
+  offer: {
     type: String,
     required: [true, "Please provide the Reward Description"],
     unique: false,
   },
-  rewardImageUrl: {
+  imgUrl: {
     type: String,
     required: [true, "Please provide the Reward Image URL"],
     unique: false,

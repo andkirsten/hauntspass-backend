@@ -10,14 +10,7 @@ const registerPassSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  passAmt: {
-    type: Number,
-    required: [
-      true,
-      "Please enter the number of people your pass will include",
-    ],
-    min: [1, "Pass must include at least 1 person"],
-  },
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

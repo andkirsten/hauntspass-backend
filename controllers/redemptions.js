@@ -11,16 +11,16 @@ exports.getRedemptions = (req, res, next) => {
 };
 
 exports.createRedemption = (req, res, next) => {
-  const { rewardId, pass } = req.body;
+  const { rewardId, passId } = req.body;
   Redemptions.create({
     rewardId,
-    pass,
+    passId,
   })
     .then((redemption) => {
       res.send({
         _id: redemption._id,
         rewardId: redemption.rewardId,
-        pass: redemption.pass,
+        passId: redemption.pass,
         redeemedAmt: redemption.redeemedAmt,
         redeemedAt: redemption.redeemedAt,
       });
