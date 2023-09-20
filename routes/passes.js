@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerPass } = require("../controllers/registrations");
+const { createPass } = require("../controllers/passes");
 const auth = require("../middlewares/auth");
 const { validatePass } = require("../middlewares/validation");
 const {
@@ -10,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.post("/", validatePass, registerPass);
+router.post("", auth, validatePass, createPass);
 
 router.post("/:passId/", auth, createRedemption);
 router.patch("/:passId/:rewardId", auth, updateRedemption);

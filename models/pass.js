@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const registerPassSchema = new mongoose.Schema({
+const PassSchema = new mongoose.Schema({
   donationId: {
     type: String,
     required: [
@@ -21,6 +21,17 @@ const registerPassSchema = new mongoose.Schema({
   },
 });
 
-const RegisterPass = mongoose.model("registerPass", registerPassSchema);
+PassSchema.statics.findByUser = function findPassByUser(user) {
+  return this.findOne({ user })
+    .populate("user")
+    .then((pass) => {
+      if (!pass) {
+        return null;
+      }
+      return pass;
+    });
+};
 
-module.exports = RegisterPass;
+const Pass = mongoose.model("Pass", PassSchema);
+
+module.exports = Pass;
