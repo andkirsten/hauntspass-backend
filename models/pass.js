@@ -21,15 +21,13 @@ const PassSchema = new mongoose.Schema({
   },
 });
 
-PassSchema.statics.findByUser = function findPassByUser(user) {
-  return this.findOne({ user })
-    .populate("user")
-    .then((pass) => {
-      if (!pass) {
-        return null;
-      }
-      return pass;
-    });
+PassSchema.statics.findPassByUser = function findPassByUser(userId) {
+  return this.findOne({ user: userId }).then((pass) => {
+    if (!pass) {
+      return null;
+    }
+    return pass;
+  });
 };
 
 const Pass = mongoose.model("Pass", PassSchema);

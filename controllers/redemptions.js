@@ -11,17 +11,17 @@ exports.getRedemptions = (req, res, next) => {
 };
 
 exports.createRedemption = (req, res, next) => {
-  const { rewardId, passId } = req.body;
+  console.log("req.body", req.body);
   Redemptions.create({
-    rewardId,
-    passId,
+    rewardId: req.body.rewardId,
+    passId: req.body.passId,
   })
     .then((redemption) => {
+      console.log("redemption", redemption);
       res.send({
         _id: redemption._id,
         rewardId: redemption.rewardId,
-        passId: redemption.pass,
-        redeemedAmt: redemption.redeemedAmt,
+        passId: redemption.passId,
         redeemedAt: redemption.redeemedAt,
       });
     })
@@ -40,52 +40,10 @@ exports.createRedemption = (req, res, next) => {
     });
 };
 
-exports.getRedemption = (req, res, next) => {
-  const { redemptionId } = req.params;
-  Redemptions.findById(redemptionId)
-
-    .then((redemption) => {
-      if (!redemption) {
-        next(new BadRequestError("Not Valid Redemption ID"));
-      }
-      res.send({
-        _id: redemption._id,
-        rewardId: redemption.rewardId,
-        pass: redemption.pass,
-        redeemedAmt: redemption.redeemedAmt,
-        redeemedAt: redemption.redeemedAt,
-      });
+exports.getRedemptions = (req, res, next) => {
+  Redemptions.find({})
+    .then((redemptions) => {
+      res.json(redemptions);
     })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Not Valid Redemption ID"));
-      }
-      next(err);
-    });
-};
-
-exports.updateRedemption = (req, res, next) => {
-  const { redemptionId } = req.params;
-  const { redeemedAmt } = req.body;
-  Redemptions.findOneAndUpdate({ redemptionId }, { redeemedAmt }).then(
-    (redemption) => {
-      if (!redemption) {
-        next(new BadRequestError("Not Valid Redemption ID"));
-      }
-      res
-        .send({
-          _id: redemption._id,
-          rewardId: redemption.rewardId,
-          pass: redemption.pass,
-          redeemedAmt: redemption.redeemedAmt,
-          redeemedAt: redemption.redeemedAt,
-        })
-        .catch((err) => {
-          if (err.name === "CastError") {
-            next(new BadRequestError("Not Valid Redemption ID"));
-          }
-          next(err);
-        });
-    },
-  );
+    .catch(next);
 };

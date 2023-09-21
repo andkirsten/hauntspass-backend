@@ -11,6 +11,7 @@ const usersRouter = require("./routes/users");
 const passRouter = require("./routes/passes");
 const eventsRouter = require("./routes/events");
 const rewardsRouter = require("./routes/rewards");
+const redemptionsRouter = require("./routes/redemptions");
 const { login, signup } = require("./controllers/users");
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/users", usersRouter);
 app.use("/pass", passRouter);
 app.use("/events", eventsRouter);
 app.use("/rewards", rewardsRouter);
+app.use("/redemption", redemptionsRouter);
 
 app.post("/login", validateLogin, login);
 app.post("/signup", validateSignup, signup);

@@ -8,6 +8,7 @@ const auth = (req, res, next) => {
     next(new UnauthorizedError("Authorization required"));
   }
   const token = authorization.replace("Bearer ", "");
+
   let payload;
   try {
     payload = jwt.verify(token, JWT_SECRET);
@@ -15,6 +16,7 @@ const auth = (req, res, next) => {
     next(new UnauthorizedError("Authorization required"));
   }
   req.user = payload;
+
   return next();
 };
 

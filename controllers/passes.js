@@ -3,8 +3,26 @@ const Pass = require("../models/pass");
 const ConflictError = require("../utils/errors/ConflictError");
 const BadRequestError = require("../utils/errors/BadRequestError");
 
+exports.getPass = (req, res, next) => {
+  Pass.findPassByUser(req.user.id)
+    .then((pass) => {
+      if (!pass) {
+        next(new BadRequestError("Not Valid User ID"));
+      }
+
+      res.send({
+        id: pass._id,
+      });
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Not Valid User ID"));
+      }
+      next(err);
+    });
+};
+
 exports.createPass = (req, res, next) => {
-  console.log(req.user);
   const { receiptRef } = req.body;
   this.getDonationId(receiptRef)
     .then((donationId) => {
@@ -19,10 +37,7 @@ exports.createPass = (req, res, next) => {
               })
                 .then((pass) => {
                   res.send({
-                    donationId: pass.donationId,
-                    _id: pass._id,
-                    user: pass.user,
-                    eventId: pass.eventId,
+                    id: pass.id,
                   });
                 })
                 .catch((err) => {
