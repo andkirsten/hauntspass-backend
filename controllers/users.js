@@ -18,7 +18,6 @@ exports.signup = (req, res, next) => {
         res.send({ name, email, _id: user._id });
       })
       .catch((err) => {
-        console.log(err);
         if (err.name === "MongoError" && err.code === 11000) {
           next(new ConflictError("This email is already in use"));
         }
