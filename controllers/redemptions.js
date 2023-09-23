@@ -1,23 +1,13 @@
 const Redemptions = require("../models/Redemptions");
-const ConflictError = require("../utils/errors/ConflictError");
-const BadRequestError = require("../utils/errors/BadRequestError");
-
-exports.getRedemptions = (req, res, next) => {
-  Redemptions.find({})
-    .then((redemptions) => {
-      res.json(redemptions);
-    })
-    .catch(next);
-};
+const ConflictError = require("../utils/errors");
+const BadRequestError = require("../utils/errors");
 
 exports.createRedemption = (req, res, next) => {
-  console.log("req.body", req.body);
   Redemptions.create({
     rewardId: req.body.rewardId,
     passId: req.body.passId,
   })
     .then((redemption) => {
-      console.log("redemption", redemption);
       res.send({
         _id: redemption._id,
         rewardId: redemption.rewardId,
@@ -27,11 +17,7 @@ exports.createRedemption = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "MongoError" && err.code === 11000) {
-        next(
-          new ConflictError(
-            "This pass has already been used to redeem this reward",
-          ),
-        );
+        next(new ConflictError("This redemption already exists"));
       }
       if (err.name === "ValidationError") {
         next(new BadRequestError("Not Valid Redemption ID"));
@@ -41,9 +27,14 @@ exports.createRedemption = (req, res, next) => {
 };
 
 exports.getRedemptions = (req, res, next) => {
-  Redemptions.find({})
+  Redemptions.findRedemptionsByUser(req.user.id)
     .then((redemptions) => {
       res.json(redemptions);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Not Valid User ID"));
+      }
+      next(err);
+    });
 };

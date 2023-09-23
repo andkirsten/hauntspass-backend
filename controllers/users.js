@@ -2,9 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
-const ConflictError = require("../utils/errors/ConflictError");
-const BadRequestError = require("../utils/errors/BadRequestError");
-const UnauthorizedError = require("../utils/errors/UnauthorizedError");
+const ConflictError = require("../utils/errors");
+const BadRequestError = require("../utils/errors");
+const UnauthorizedError = require("../utils/errors");
 
 exports.signup = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -18,11 +18,12 @@ exports.signup = (req, res, next) => {
         res.send({ name, email, _id: user._id });
       })
       .catch((err) => {
+        console.log(err);
         if (err.name === "MongoError" && err.code === 11000) {
-          next(new ConflictError("User already exists"));
+          next(new ConflictError("This email is already in use"));
         }
         if (err.name === "ValidationError") {
-          next(new BadRequestError("Incorrect email or password"));
+          next(new BadRequestError("Please enter a valid email and password"));
         }
         next(err);
       });
@@ -39,11 +40,13 @@ exports.login = async (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
+      console.log(err);
       if (err.name === "Error") {
-        next(new UnauthorizedError("You are not authorized to login"));
+        next(new UnauthorizedError("Invalid email or password"));
       }
       next(err);
-    });
+    })
+    .catch(next);
 };
 
 exports.getCurrentUser = async (req, res, next) => {

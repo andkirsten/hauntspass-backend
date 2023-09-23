@@ -1,5 +1,5 @@
 const Event = require("../models/Events");
-const BadRequestError = require("../utils/errors/BadRequestError");
+const BadRequestError = require("../utils/errors");
 
 exports.getEvents = (req, res, next) => {
   Event.find({})

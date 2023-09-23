@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Pass = require("../models/pass");
-const ConflictError = require("../utils/errors/ConflictError");
-const BadRequestError = require("../utils/errors/BadRequestError");
+const ConflictError = require("../utils/errors");
+const BadRequestError = require("../utils/errors");
 
 exports.getPass = (req, res, next) => {
   Pass.findPassByUser(req.user.id)
@@ -9,11 +9,11 @@ exports.getPass = (req, res, next) => {
       if (!pass) {
         next(new BadRequestError("Not Valid User ID"));
       }
-
       res.send({
         id: pass._id,
       });
     })
+
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Not Valid User ID"));

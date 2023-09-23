@@ -1,8 +1,8 @@
-const ConflictError = require("../utils/errors/ConflictError");
-const NotFoundError = require("../utils/errors/NotFoundError");
-const BadRequestError = require("../utils/errors/BadRequestError");
-const UnauthorizedError = require("../utils/errors/UnauthorizedError");
-const ForbiddenError = require("../utils/errors/ForbiddenError");
+const { BadRequestError } = require("../utils/errors/BadRequestError");
+const { UnauthorizedError } = require("../utils/errors/UnauthorizedError");
+const { ForbiddenError } = require("../utils/errors/ForbiddenError");
+const { NotFoundError } = require("../utils/errors/NotFoundError");
+const { ConflictError } = require("../utils/errors/ConflictError");
 
 const errorHandler = (err, req, res, next) => {
   if (

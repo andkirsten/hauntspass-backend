@@ -1,6 +1,6 @@
 const Reward = require("../models/Rewards");
-const ConflictError = require("../utils/errors/ConflictError");
-const BadRequestError = require("../utils/errors/BadRequestError");
+const ConflictError = require("../utils/errors");
+const BadRequestError = require("../utils/errors");
 
 exports.getRewards = (req, res, next) => {
   Reward.find({})
@@ -43,10 +43,10 @@ exports.createReward = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "MongoError" && err.code === 11000) {
-        next(new ConflictError("This reward already exists"));
+        throw new ConflictError("This reward already exists");
       }
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Not Valid Reward ID"));
+        throw new BadRequestError("Not Valid Reward ID");
       }
       next(err);
     });
@@ -88,10 +88,10 @@ exports.updateReward = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "MongoError" && err.code === 11000) {
-        next(new ConflictError("This reward already exists"));
+        throw new ConflictError("This reward already exists");
       }
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Not Valid Reward ID"));
+        throw new BadRequestError("Not Valid Reward ID");
       }
       next(err);
     });
@@ -101,7 +101,7 @@ exports.deleteReward = (req, res, next) => {
   const { rewardId } = req.params;
   Reward.findByIdAndDelete({ rewardId })
     .orFail(() => {
-      throw new BadRequestError("Not Valid Reward ID");
+      next(new BadRequestError("Not Valid Reward ID"));
     })
     .then(() => res.send({ message: "Reward Deleted" }))
     .catch((err) => {
