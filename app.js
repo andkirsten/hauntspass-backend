@@ -10,9 +10,10 @@ const { validateLogin, validateSignup } = require("./middlewares/validation");
 const usersRouter = require("./routes/users");
 const passRouter = require("./routes/passes");
 const eventsRouter = require("./routes/events");
-const rewardsRouter = require("./routes/rewards");
+
 const redemptionsRouter = require("./routes/redemptions");
 const { login, signup } = require("./controllers/users");
+const { getRewards } = require("./controllers/rewards");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -37,9 +38,9 @@ mongoose
 app.use("/users", usersRouter);
 app.use("/pass", passRouter);
 app.use("/events", eventsRouter);
-app.use("/rewards", rewardsRouter);
 app.use("/redemption", redemptionsRouter);
 
+app.get("/rewards", getRewards);
 app.post("/login", validateLogin, login);
 app.post("/signup", validateSignup, signup);
 
