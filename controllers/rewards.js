@@ -1,4 +1,6 @@
 const Reward = require("../models/Rewards");
+const { BadRequestError } = require("../utils/errors/BadRequestError");
+const { ConflictError } = require("../utils/errors/ConflictError");
 
 exports.getRewards = (req, res, next) => {
   Reward.find({})
@@ -11,47 +13,47 @@ exports.getRewards = (req, res, next) => {
     });
 };
 
-// exports.createReward = (req, res, next) => {
-//   const {
-//     eventId,
-//     rewardTitle,
-//     rewardLocation,
-//     rewardDescription,
-//     rewardImageUrl,
-//     rewardExtras,
-//     rewardTerms,
-//   } = req.body;
-//   Reward.create({
-//     eventId,
-//     rewardTitle,
-//     rewardLocation,
-//     rewardDescription,
-//     rewardImageUrl,
-//     rewardExtras,
-//     rewardTerms,
-//   })
-//     .then((reward) => {
-//       res.send({
-//         _id: reward._id,
-//         eventId: reward.eventId,
-//         rewardTitle: reward.rewardTitle,
-//         rewardLocation: reward.rewardLocation,
-//         rewardDescription: reward.rewardDescription,
-//         rewardImageUrl: reward.rewardImageUrl,
-//         rewardExtras: reward.rewardExtras,
-//         rewardTerms: reward.rewardTerms,
-//       });
-//     })
-//     .catch((err) => {
-//       if (err.name === "MongoError" && err.code === 11000) {
-//         throw new ConflictError("This reward already exists");
-//       }
-//       if (err.name === "ValidationError") {
-//         throw new BadRequestError("Not Valid Reward ID");
-//       }
-//       next(err);
-//     });
-// };
+exports.createReward = (req, res, next) => {
+  const {
+    eventId,
+    rewardTitle,
+    businessDescription,
+    offer,
+    imgUrl,
+    rewardExtras,
+    rewardTerms,
+  } = req.body;
+  Reward.create({
+    eventId,
+    rewardTitle,
+    businessDescription,
+    offer,
+    imgUrl,
+    rewardExtras,
+    rewardTerms,
+  })
+    .then((reward) => {
+      res.send({
+        _id: reward._id,
+        eventId: reward.eventId,
+        rewardTitle: reward.rewardTitle,
+        businessDescription: reward.businessDescription,
+        offer: reward.offer,
+        imgUrl: reward.imgUrl,
+        rewardExtras: reward.rewardExtras,
+        rewardTerms: reward.rewardTerms,
+      });
+    })
+    .catch((err) => {
+      if (err.name === "MongoError" && err.code === 11000) {
+        throw new ConflictError("This reward already exists");
+      }
+      if (err.name === "ValidationError") {
+        throw new BadRequestError("Not Valid Reward ID");
+      }
+      next(err);
+    });
+};
 
 // exports.updateReward = (req, res, next) => {
 //   const { rewardId } = req.params;

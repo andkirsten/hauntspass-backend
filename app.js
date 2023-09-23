@@ -14,6 +14,7 @@ const eventsRouter = require("./routes/events");
 const redemptionsRouter = require("./routes/redemptions");
 const { login, signup } = require("./controllers/users");
 const { getRewards } = require("./controllers/rewards");
+const { createReward } = require("./controllers/rewards");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -40,6 +41,7 @@ app.use("/pass", passRouter);
 app.use("/events", eventsRouter);
 app.use("/redemption", redemptionsRouter);
 
+app.post("/rewards", createReward);
 app.get("/rewards", getRewards);
 app.post("/login", validateLogin, login);
 app.post("/signup", validateSignup, signup);
