@@ -1,6 +1,6 @@
 const Redemptions = require("../models/Redemptions");
-const ConflictError = require("../utils/errors");
-const BadRequestError = require("../utils/errors");
+const ConflictError = require("../utils/errors/ConflictError");
+const BadRequestError = require("../utils/errors/BadRequestError");
 
 exports.createRedemption = (req, res, next) => {
   Redemptions.create({

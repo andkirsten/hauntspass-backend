@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Pass = require("../models/pass");
-const ConflictError = require("../utils/errors");
-const BadRequestError = require("../utils/errors");
+const ConflictError = require("../utils/errors/ConflictError");
+const BadRequestError = require("../utils/errors/BadRequestError");
 
 exports.getPass = (req, res, next) => {
   Pass.findPassByUser(req.user.id)

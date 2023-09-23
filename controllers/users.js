@@ -2,9 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
-const ConflictError = require("../utils/errors");
-const BadRequestError = require("../utils/errors");
-const UnauthorizedError = require("../utils/errors");
+const ConflictError = require("../utils/errors/ConflictError");
+const BadRequestError = require("../utils/errors/BadRequestError");
+const UnauthorizedError = require("../utils/errors/UnauthorizedError");
 
 exports.signup = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -40,7 +40,6 @@ exports.login = async (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      console.log(err);
       if (err.name === "Error") {
         next(new UnauthorizedError("Invalid email or password"));
       }
