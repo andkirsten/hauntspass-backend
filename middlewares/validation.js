@@ -34,4 +34,21 @@ const validateLogin = celebrate({
   }),
 });
 
-module.exports = { validateSignup, validateLogin };
+const validatePass = celebrate({
+  body: Joi.object().keys({
+    receiptRef: Joi.string().required().messages({
+      "string.empty":
+        "Please provide the Receipt Reference from your confirmation email",
+    }),
+  }),
+});
+
+const validateEvent = celebrate({
+  body: Joi.object().keys({
+    eventName: Joi.string().required().messages({
+      "string.empty": "Please provide the Event Name",
+    }),
+  }),
+});
+
+module.exports = { validateSignup, validateLogin, validatePass, validateEvent };
