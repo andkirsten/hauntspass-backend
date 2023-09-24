@@ -1,8 +1,8 @@
-const { BadRequestError } = require("../utils/errors/BadRequestError");
-const { UnauthorizedError } = require("../utils/errors/UnauthorizedError");
-const { ForbiddenError } = require("../utils/errors/ForbiddenError");
-const { NotFoundError } = require("../utils/errors/NotFoundError");
-const { ConflictError } = require("../utils/errors/ConflictError");
+const BadRequestError = require("../utils/errors/BadRequestError");
+const UnauthorizedError = require("../utils/errors/UnauthorizedError");
+const ForbiddenError = require("../utils/errors/ForbiddenError");
+const NotFoundError = require("../utils/errors/NotFoundError");
+const ConflictError = require("../utils/errors/ConflictError");
 
 const errorHandler = (err, req, res, next) => {
   if (
@@ -17,5 +17,4 @@ const errorHandler = (err, req, res, next) => {
 
   return res.status(500).json({ error: "Internal server error" });
 };
-
 module.exports = { errorHandler };

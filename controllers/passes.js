@@ -99,7 +99,7 @@ exports.verifyJustGivingId = (donationId) =>
     .then((res) => {
       if (res) {
         const donationAmt = res.data.donorLocalAmount;
-        if (donationAmt >= 15) {
+        if (donationAmt >= 20) {
           return true;
         }
         return false;

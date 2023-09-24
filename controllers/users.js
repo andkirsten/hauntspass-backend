@@ -39,12 +39,13 @@ exports.login = async (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
+      console.log("login", err);
       if (err.name === "Error") {
         next(new UnauthorizedError("Invalid email or password"));
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
 
 exports.getCurrentUser = async (req, res, next) => {
