@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
         res.send({ name, email, _id: user._id });
       })
       .catch((err) => {
-        if (err.name === "MongoError" && err.code === 11000) {
+        if (err.name === "MongoServerError" && err.code === 11000) {
           next(new ConflictError("This email is already in use"));
         }
         if (err.name === "ValidationError") {
@@ -41,10 +41,10 @@ exports.login = async (req, res, next) => {
     .catch((err) => {
       if (err.name === "Error") {
         next(new UnauthorizedError("Invalid email or password"));
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
 
 exports.getCurrentUser = async (req, res, next) => {

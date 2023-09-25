@@ -66,12 +66,12 @@ exports.createPass = (req, res, next) => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.log("create pass", err);
           });
       }
     })
     .catch((err) => {
-      console.log(err);
+      next(new BadRequestError("Please enter a valid Receipt Reference"));
     });
 };
 
@@ -88,7 +88,8 @@ exports.getDonationId = (receiptRef) =>
       return null;
     })
     .catch((err) => {
-      console.log(err);
+      console.log("getDonationId", err);
+      throw new BadRequestError("Please enter a valid Receipt Reference");
     });
 
 // api call to verify that the donation is valid and that the donation amount is at least $15
@@ -99,7 +100,7 @@ exports.verifyJustGivingId = (donationId) =>
     .then((res) => {
       if (res) {
         const donationAmt = res.data.donorLocalAmount;
-        if (donationAmt >= 15) {
+        if (donationAmt >= 20) {
           return true;
         }
         return false;
@@ -107,5 +108,8 @@ exports.verifyJustGivingId = (donationId) =>
       return null;
     })
     .catch((err) => {
-      console.log(err);
+      console.log("verify amount", err);
+      throw new BadRequestError(
+        "The donation amount must be at least $20 to recieve a Haunts Pass",
+      );
     });

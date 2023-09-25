@@ -6,7 +6,6 @@ exports.getRewards = (req, res, next) => {
   Reward.find({})
     .then((rewards) => {
       res.json(rewards);
-      console.log(rewards);
     })
     .catch((err) => {
       next(err);

@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
 const MONGO_URL =
-  "mongodb://and_kirsten:Firework1scj!@api.daybreakhaunts.ignorelist.com:3001/rewards";
+  "mongodb://
 
 const mongoClient = new MongoClient(MONGO_URL, {
   useNewUrlParser: true,
