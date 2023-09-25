@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const { errors } = require("celebrate");
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { validateLogin, validateSignup } = require("./middlewares/validation");
+
 const usersRouter = require("./routes/users");
 const passRouter = require("./routes/passes");
 const eventsRouter = require("./routes/events");
@@ -44,7 +44,7 @@ app.use("/redemption", redemptionsRouter);
 app.post("/rewards", createReward);
 app.get("/rewards", getRewards);
 app.post("/login", login);
-app.post("/signup", validateSignup, signup);
+app.post("/signup", signup);
 
 app.use(() => {
   throw new Error("Not Found");
