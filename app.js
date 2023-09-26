@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const helmet = require("helmet");
-const { errors } = require("celebrate");
+
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
@@ -51,7 +51,7 @@ app.use(() => {
 });
 
 app.use(errorLogger);
-app.use(errors());
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {
