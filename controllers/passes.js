@@ -60,17 +60,17 @@ exports.createPass = (req, res, next) => {
             } else {
               next(
                 new BadRequestError(
-                  "The donation amount must be at least $20 to recieve a Haunts Pass",
+                  "The donation amount must be at least $25 to recieve a Haunts Pass",
                 ),
               );
             }
           })
           .catch((err) => {
-            console.log("create pass", err);
+            next(err);
           });
       }
     })
-    .catch((err) => {
+    .catch(() => {
       next(new BadRequestError("Please enter a valid Receipt Reference"));
     });
 };
@@ -87,12 +87,11 @@ exports.getDonationId = (receiptRef) =>
       }
       return null;
     })
-    .catch((err) => {
-      console.log("getDonationId", err);
+    .catch(() => {
       throw new BadRequestError("Please enter a valid Receipt Reference");
     });
 
-// api call to verify that the donation is valid and that the donation amount is at least $15
+// api call to verify that the donation is valid and that the donation amount is at least $25
 
 exports.verifyJustGivingId = (donationId) =>
   axios
@@ -100,16 +99,15 @@ exports.verifyJustGivingId = (donationId) =>
     .then((res) => {
       if (res) {
         const donationAmt = res.data.donorLocalAmount;
-        if (donationAmt >= 20) {
+        if (donationAmt >= 25) {
           return true;
         }
         return false;
       }
       return null;
     })
-    .catch((err) => {
-      console.log("verify amount", err);
+    .catch(() => {
       throw new BadRequestError(
-        "The donation amount must be at least $20 to recieve a Haunts Pass",
+        "The donation amount must be at least $25 to recieve a Haunts Pass",
       );
     });
