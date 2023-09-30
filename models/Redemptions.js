@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 const pass = require("./pass");
+const BadRequestError = require("../utils/errors/BadRequestError");
 
 const redemptionSchema = new mongoose.Schema({
   rewardId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Reward",
-    unique: false,
   },
   passId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Pass",
-    unique: false,
   },
   redeemedAt: {
     type: Date,
@@ -33,6 +32,24 @@ redemptionSchema.statics.findRedemptionsByUser = function findRedemptionsByUser(
     });
   });
 };
+
+redemptionSchema.index({ rewardId: 1, passId: 1 }, { unique: true });
+
+redemptionSchema.pre("save", async function checkExistingRedemption(next) {
+  try {
+    const existingRedemption = await this.constructor.findOne({
+      rewardId: this.rewardId,
+      passId: this.passId,
+    });
+
+    if (existingRedemption) {
+      return next(new BadRequestError("You have already redeemed this reward"));
+    }
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
 
 const Redemption = mongoose.model("redemption", redemptionSchema);
 

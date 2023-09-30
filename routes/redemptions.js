@@ -1,7 +1,6 @@
 const express = require("express");
 const {
   createRedemption,
-
   getRedemptions,
 } = require("../controllers/redemptions");
 const auth = require("../middlewares/auth");
