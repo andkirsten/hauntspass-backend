@@ -43,7 +43,7 @@ app.use("/redemption", redemptionsRouter);
 
 app.post("/rewards", createReward);
 app.get("/rewards", getRewards);
-app.post("/login", login);
+app.post("/signin", login);
 app.post("/signup", signup);
 
 app.use(() => {

@@ -77,7 +77,7 @@ exports.createPass = (req, res, next) => {
 
 // api call to get a DonationId from JustGiving API using the receiptRef that user provides from their confirmation email
 
-exports.getDonationId = (receiptRef) =>
+exports.getDonationId = (receiptRef, next) =>
   axios
     .get(`https://api.justgiving.com/8ff4a9f3/v1/donationid/${receiptRef}`)
     .then((res) => {
@@ -88,12 +88,12 @@ exports.getDonationId = (receiptRef) =>
       return null;
     })
     .catch(() => {
-      throw new BadRequestError("Please enter a valid Receipt Reference");
+      next(new BadRequestError("Please enter a valid Receipt Reference"));
     });
 
 // api call to verify that the donation is valid and that the donation amount is at least $25
 
-exports.verifyJustGivingId = (donationId) =>
+exports.verifyJustGivingId = (donationId, next) =>
   axios
     .get(`https://api.justgiving.com/8ff4a9f3/v1/donation/${donationId}`)
     .then((res) => {
@@ -107,7 +107,9 @@ exports.verifyJustGivingId = (donationId) =>
       return null;
     })
     .catch(() => {
-      throw new BadRequestError(
-        "The donation amount must be at least $25 to recieve a Haunts Pass",
+      next(
+        new BadRequestError(
+          "The donation amount must be at least $25 to receive a Haunts Pass",
+        ),
       );
     });

@@ -31,7 +31,7 @@ The frontend responsitory for the Haunts Pass web application can be found at ht
 
 ### Backend Repository
 
-This is the backend repository for the Haunts Pass web application.
+This is the backend repository for the Haunts Pass web application. The address for the server is https://api.daybreakhaunts.ignorelist.com
 
 #### Technologies Used
 
