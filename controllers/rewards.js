@@ -45,10 +45,10 @@ exports.createReward = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "MongoError" && err.code === 11000) {
-        throw new ConflictError("This reward already exists");
+        next(new ConflictError("This reward already exists"));
       }
       if (err.name === "ValidationError") {
-        throw new BadRequestError("Not Valid Reward ID");
+        next(new BadRequestError("Not Valid Reward ID"));
       }
       next(err);
     });
