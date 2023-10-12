@@ -98,13 +98,11 @@ exports.verifyJustGivingId = (donationId, next) =>
     .get(`https://api.justgiving.com/8ff4a9f3/v1/donation/${donationId}`)
     .then((res) => {
       if (res) {
-        const donationAmt = res.data.donorLocalAmount;
-        if (donationAmt >= 25) {
-          return true;
-        }
-        return false;
+        // const donationAmt = res.data.donorLocalAmount;
+        // if (donationAmt >= 25) {
+        return true;
       }
-      return null;
+      return false;
     })
     .catch(() => {
       next(
