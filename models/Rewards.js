@@ -35,6 +35,11 @@ const rewardSchema = new mongoose.Schema({
     required: [true, "Please provide the Reward Terms"],
     unique: false,
   },
+  expirationDate: {
+    type: Date,
+    required: [true, "Please provide the Reward Expiration Date"],
+    unique: false,
+  },
 });
 
 const Reward = mongoose.model("reward", rewardSchema);
