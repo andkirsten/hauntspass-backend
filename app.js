@@ -6,7 +6,6 @@ const helmet = require("helmet");
 
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { limiter } = require("./middlewares/rateLimiter");
 
 const { mongoServerAddress } = require("./utils/config");
 
@@ -27,7 +26,6 @@ app.use(cors({ origin: allowedCors }));
 app.use(helmet());
 app.use(requestLogger);
 app.use(express.json());
-app.use(limiter);
 
 mongoose
   .connect(mongoServerAddress, {
