@@ -39,7 +39,6 @@ exports.login = async (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      console.log(err);
       if (err.name === "Error") {
         next(new UnauthorizedError("Invalid email or password"));
       } else {
