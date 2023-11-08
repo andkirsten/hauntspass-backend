@@ -3,7 +3,6 @@ const UnauthorizedError = require("../utils/errors/UnauthorizedError");
 const ForbiddenError = require("../utils/errors/ForbiddenError");
 const NotFoundError = require("../utils/errors/NotFoundError");
 const ConflictError = require("../utils/errors/ConflictError");
-const ValidationError = require("../utils/errors/ValidationError");
 
 const errorHandler = (err, req, res, next) => {
   if (
@@ -11,8 +10,7 @@ const errorHandler = (err, req, res, next) => {
     err instanceof UnauthorizedError ||
     err instanceof ForbiddenError ||
     err instanceof NotFoundError ||
-    err instanceof ConflictError ||
-    err instanceof ValidationError
+    err instanceof ConflictError
   ) {
     return res.status(err.statusCode).json({ error: err.message });
   }
