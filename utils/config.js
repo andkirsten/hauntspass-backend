@@ -1,11 +1,7 @@
-const crypto = require("crypto");
 require("dotenv").config();
 
-const generateJWTSecret = () => {
-  const byteLength = 32;
-  return crypto.randomBytes(byteLength).toString("hex");
-};
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
-const JWT_SECRET = process.env.JWT_SECRET || generateJWTSecret();
+const mongoServerAddress = "mongodb://127.0.0.1:27017/haunts";
 
-module.exports = { JWT_SECRET };
+module.exports = { mongoServerAddress, JWT_SECRET };

@@ -14,6 +14,10 @@ This project consists of the following components:
 
 The frontend responsitory for the Haunts Pass web application can be found at https://github.com/andkirsten/hauntspass-frontend.git
 
+### Server Address
+
+The address for the server address is mongodb://127.0.0.1:27017/haunts
+
 #### Technologies Used
 
 - React

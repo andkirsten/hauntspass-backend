@@ -6,18 +6,14 @@ const helmet = require("helmet");
 
 const { errorHandler } = require("./middlewares/errors");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { limiter } = require("./middlewares/rateLimiter");
 
-const usersRouter = require("./routes/users");
-const passRouter = require("./routes/passes");
-const eventsRouter = require("./routes/events");
-
-const redemptionsRouter = require("./routes/redemptions");
-const { login, signup } = require("./controllers/users");
-const { getRewards } = require("./controllers/rewards");
-const { createReward } = require("./controllers/rewards");
+const { mongoServerAddress } = require("./utils/config");
 
 const app = express();
 const { PORT = 3001 } = process.env;
+
+const routes = require("./routes");
 
 dotenv.config();
 
@@ -25,9 +21,10 @@ app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
 app.use(express.json());
+app.use(limiter);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/haunts", {
+  .connect(mongoServerAddress, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -36,23 +33,13 @@ mongoose
   // eslint-disable-next-line no-console
   .catch((err) => console.log(err));
 
-app.use("/users", usersRouter);
-app.use("/pass", passRouter);
-app.use("/events", eventsRouter);
-app.use("/redemption", redemptionsRouter);
-
-app.post("/rewards", createReward);
-app.get("/rewards", getRewards);
-app.post("/signin", login);
-app.post("/signup", signup);
+app.use(routes);
+app.use(errorLogger);
+app.use(errorHandler);
 
 app.use(() => {
   throw new Error("Not Found");
 });
-
-app.use(errorLogger);
-
-app.use(errorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
