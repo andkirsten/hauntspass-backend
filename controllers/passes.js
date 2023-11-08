@@ -2,12 +2,13 @@ const axios = require("axios");
 const Pass = require("../models/pass");
 const ConflictError = require("../utils/errors/ConflictError");
 const BadRequestError = require("../utils/errors/BadRequestError");
+const NotFoundError = require("../utils/errors/NotFoundError");
 
 exports.getPass = (req, res, next) => {
   Pass.findPassByUser(req.user.id)
     .then((pass) => {
       if (!pass) {
-        next(new BadRequestError("Not Valid User ID"));
+        next(new NotFoundError("User Not Found"));
       }
       res.send({
         id: pass._id,
@@ -41,7 +42,7 @@ exports.createPass = (req, res, next) => {
                   });
                 })
                 .catch((err) => {
-                  if (err.name === "MongoError" && err.code === 11000) {
+                  if (err.name === "MongoServerError" && err.code === 11000) {
                     next(
                       new ConflictError(
                         "This Receipt Reference has already been used to create a Haunts Pass",
@@ -71,7 +72,7 @@ exports.createPass = (req, res, next) => {
       }
     })
     .catch(() => {
-      next(new BadRequestError("Please enter a valid Receipt Reference"));
+      next(new NotFoundError("Please enter a valid Receipt Reference"));
     });
 };
 
@@ -88,7 +89,7 @@ exports.getDonationId = (receiptRef, next) =>
       return null;
     })
     .catch(() => {
-      next(new BadRequestError("Please enter a valid Receipt Reference"));
+      next(new NotFoundError("Please enter a valid Receipt Reference"));
     });
 
 // api call to verify that the donation is valid and that the donation amount is at least $25

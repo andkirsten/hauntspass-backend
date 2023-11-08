@@ -16,7 +16,7 @@ exports.createRedemption = (req, res, next) => {
       });
     })
     .catch((err) => {
-      if (err.name === "MongoError" && err.code === 11000) {
+      if (err.name === "MongoServerError" && err.code === 11000) {
         next(new ConflictError("This redemption already exists"));
       }
       if (err.name === "ValidationError") {
