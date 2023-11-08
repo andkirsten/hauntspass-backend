@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
+const { JWT_SECRET } = process.env;
 
-const mongoServerAddress = "mongodb://127.0.0.1:27017/haunts";
+const mongoServerAddress = process.env.DB_HOST;
 
 module.exports = { mongoServerAddress, JWT_SECRET };

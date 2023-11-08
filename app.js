@@ -11,18 +11,12 @@ const { mongoServerAddress } = require("./utils/config");
 
 const app = express();
 const { PORT = 3001 } = process.env;
-const allowedCors = [
-  "https://www.daybreakhaunts.org",
-  "https://daybreakhaunts.org",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
 
 const routes = require("./routes");
 
 dotenv.config();
 
-app.use(cors({ origin: allowedCors }));
+app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
 app.use(express.json());

@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { validateLogin, validateSignup } = require("../middlewares/validator");
 
 const usersRouter = require("./users");
 const passRouter = require("./passes");
@@ -20,8 +21,8 @@ router.use("/redemption", redemptionsRouter);
 router.post("/rewards", createReward);
 router.get("/rewards", getRewards);
 router.delete("/rewards/:rewardId", deleteReward);
-router.post("/signin", login);
-router.post("/signup", signup);
+router.post("/signin", validateLogin, login);
+router.post("/signup", validateSignup, signup);
 
 router.use((req, res, next) => {
   next(new Error("Not Found"));
