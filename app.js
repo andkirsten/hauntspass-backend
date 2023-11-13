@@ -35,10 +35,6 @@ app.use(routes);
 app.use(errorLogger);
 app.use(errorHandler);
 
-app.use(() => {
-  throw new Error("Not Found");
-});
-
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Example app listening at http://localhost:${PORT}`);
